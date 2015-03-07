@@ -1,5 +1,25 @@
 <h1>Issues</h1>
 
+<%= form_tag("/issues/sync", method: "post") do %>
+  <p>
+    <%= label_tag(:domain, "Domain:") %>
+    <input value="https://jbrunton.atlassian.net" type="text" name="domain" id="domain">
+
+    <%= label_tag(:board, "Board:") %>
+    <input value="1" type="text" name="board" id="board">
+  </p>
+  
+  <p>
+    <%= label_tag(:username, "Username:") %>
+    <input value="jbrunton" type="text" name="username" id="username">    
+    
+    <%= label_tag(:password, "Password:") %>
+    <input type="text" name="password" id="password">
+  </p>
+
+  <%= submit_tag("Sync") %>
+<% end %>
+
 <table>
   <% @issues.each do |issue| %>
     <tr>

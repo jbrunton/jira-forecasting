@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'issues#index'
+  
+  post 'issues/sync' => 'issues#sync'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
