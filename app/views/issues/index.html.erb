@@ -1,0 +1,14 @@
+<h1>Issues</h1>
+
+<table>
+  <% @issues.each do |issue| %>
+    <tr>
+      <th>
+        <%= issue.key %>
+      </th>
+      <td>
+        <%= issue.summary %>
+      </td>
+    </tr>
+  <% end %>
+</table>
