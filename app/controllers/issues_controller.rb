@@ -3,7 +3,7 @@ class IssuesController < ApplicationController
   include JiraRequests
   
   def index
-    @issues = Issue.all
+    @epics = Issue.where(issue_type: 'epic')
   end
   
   def sync
@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
       end
     end
     
-    @issues = Issue.all
+    @epics = Issue.where(issue_type: 'epic')
     
     render "index"
   end

@@ -25,17 +25,11 @@
 <% end %>
 
 <table>
-  <% @issues.each do |issue| %>
-    <tr>
-      <th>
-        <a href="<%= issue.self %>"><%= issue.key %></a>
-      </th>
-      <td>
-        <%= issue.summary %>
-      </td>
-      <td>
-        <%= issue.issue_type %>
-      </td>
-    </tr>
+  <% @epics.each do |epic| %>
+    <%= render epic %>
+    
+    <% epic.issues.each do |issue| %>
+      <%= render issue %>
+    <% end %>
   <% end %>
 </table>
