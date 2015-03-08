@@ -1,27 +1,30 @@
-<h1>Issues</h1>
+<div class="content-full">
+  <h1>Issues</h1>
 
-<%= form_tag("/issues/sync", method: "post") do %>
-  <p>
-    <%= label_tag(:username, "Username:") %>
-    <input value="jbrunton" type="text" name="username" id="username">    
+  <%= form_tag("/issues/sync", method: "post") do %>
+    <p>
+      <%= label_tag(:username, "Username:") %>
+      <input value="jbrunton" type="text" name="username" id="username">    
     
-    <%= label_tag(:password, "Password:") %>
-    <input type="text" name="password" id="password">
-  </p>
+      <%= label_tag(:password, "Password:") %>
+      <input type="text" name="password" id="password">
 
-  <%= submit_tag("Sync") %>
-<% end %>
+      <%= submit_tag("Sync") %>
+    </p>
 
-<% unless @board.nil? %>
-  <h3><%= @board['name'] %></h3>
-<% end %>
-
-<table>
-  <% @epics.each do |epic| %>
-    <%= render epic %>
-    
-    <% epic.issues.each do |issue| %>
-      <%= render issue %>
-    <% end %>
   <% end %>
-</table>
+
+  <% unless @board.nil? %>
+    <h3><%= @board['name'] %></h3>
+  <% end %>
+
+  <% @epics.each do |epic| %>
+    <table>
+      <%= render epic %>
+    
+      <% epic.issues.each do |issue| %>
+        <%= render issue %>
+      <% end %>
+    </table>
+  <% end %>
+</div>
