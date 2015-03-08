@@ -18,7 +18,7 @@ class IssuesController < ApplicationController
     epic_response = request_epics
     epics = parse_issue_response(epic_response)
     WebsocketRails[:status].trigger(:status_update, 'Loaded epics')
-    LoadEpicJob.new(epics, 0, params).enqueue
+    LoadEpicJob.perform_async(epics, 0, params)
     
     render nothing: true
   end
