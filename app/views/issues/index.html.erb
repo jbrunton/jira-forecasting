@@ -24,7 +24,7 @@
   <% @issues.each do |issue| %>
     <tr>
       <th>
-        <%= issue.key %>
+        <a href="<%= issue.self %>"><%= issue.key %></a>
       </th>
       <td>
         <%= issue.summary %>
