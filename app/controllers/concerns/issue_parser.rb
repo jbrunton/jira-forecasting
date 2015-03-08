@@ -9,14 +9,19 @@ module IssueParser
   end
 private
   def parse_issue(issue_json)
-    Issue.create(
+    attrs = {
       :key => parse_key(issue_json),
       :self => parse_self(issue_json),
       :summary => parse_summary(issue_json),
       :issue_type => parse_issue_type(issue_json),
-      :started => parse_started_date(issue_json),
-      :completed => parse_completed_date(issue_json)
-    )
+    }
+    
+    if attrs[:issue_type] == 'story'
+      attrs[:started] = parse_started_date(issue_json)
+      attrs[:completed] = parse_completed_date(issue_json)
+    end
+
+    Issue.create(attrs)
   end
 
   def parse_key(issue_json)
