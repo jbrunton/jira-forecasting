@@ -5,6 +5,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string :key
       t.string :summary
       t.string :issue_type
+      t.references :epic, index: true
 
       t.timestamps null: false
     end

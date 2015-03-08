@@ -18,8 +18,11 @@ ActiveRecord::Schema.define(version: 20150307184503) do
     t.string   "key"
     t.string   "summary"
     t.string   "issue_type"
+    t.integer  "epic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "issues", ["epic_id"], name: "index_issues_on_epic_id"
 
 end
