@@ -7,7 +7,7 @@ class IssuesController < ApplicationController
   end
   
   def test
-    WebsocketRails[:status].trigger(:status_update, "test!")
+    WebsocketRails[:status].trigger(:status_update, "test!,")
     @epics = []
     render "index"
   end
@@ -18,26 +18,7 @@ class IssuesController < ApplicationController
     epic_response = request_epics
     epics = parse_issue_response(epic_response)
     WebsocketRails[:status].trigger(:status_update, 'Loaded epics')
-    epics.each_with_index do |epic, index|
-      issue_response = request_issues(epic.key)
-      WebsocketRails[:status].trigger(:status_update, "Loaded #{index + 1} of #{epics.length} epics")
-      issues = parse_issue_response(issue_response)
-      issues.each do |issue|
-        epic.issues.append(issue)
-      end
-
-      started_dates = epic.issues.map{|issue| issue.started}.compact
-      if started_dates.any?
-        epic.started = started_dates.min
-      end
-
-      completed_dates = epic.issues.map{|issue| issue.completed}.compact
-      unless completed_dates.length < issues.length # i.e. no issues are incomplete
-        epic.completed = completed_dates.max
-      end
-      
-      epic.save
-    end
+    LoadEpicJob.new(epics, 0, params).enqueue
     
     render nothing: true
   end
