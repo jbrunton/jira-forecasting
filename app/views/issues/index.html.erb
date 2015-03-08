@@ -1,7 +1,7 @@
 <div class="content-full">
   <h1>Issues</h1>
 
-  <%= form_tag("/issues/sync", method: "post") do %>
+  <%= form_tag("/issues/sync", remote: true) do %>
     <p>
       <%= label_tag(:username, "Username:") %>
       <input value="jbrunton" type="text" name="username" id="username">    

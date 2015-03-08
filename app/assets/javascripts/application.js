@@ -14,6 +14,19 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require websocket_rails/main
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
+//= require websocket_rails/main
+
+var dispatcher = new WebSocketRails('localhost:3000/websocket');
+
+// subscribe to the channel
+var channel = dispatcher.subscribe('status');
+
+// bind to a channel event
+channel.bind('status_update', function(message) {
+  alert(message);
+});
+

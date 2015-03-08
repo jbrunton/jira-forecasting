@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   root 'issues#index'
   
   post 'issues/sync' => 'issues#sync'
+  
+  get 'test' => 'issues#test'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
