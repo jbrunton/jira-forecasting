@@ -16,6 +16,8 @@
     <% end %>
   </td>
   <td width="10%">
-    <%= issue.issue_type %>
+    <% unless issue.completed.nil? or issue.started.nil? %>
+      <%= distance_of_time_in_words(issue.started, issue.completed) %>
+    <% end %>
   </td>
 </tr>
