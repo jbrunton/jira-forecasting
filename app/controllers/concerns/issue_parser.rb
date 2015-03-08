@@ -7,7 +7,7 @@ module IssueParser
       parse_issue(issue_json)
     end
   end
-private
+
   def parse_issue(issue_json)
     attrs = {
       :key => parse_key(issue_json),
@@ -24,6 +24,7 @@ private
     Issue.create(attrs)
   end
 
+private
   def parse_key(issue_json)
     issue_json['key']
   end
