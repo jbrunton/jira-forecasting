@@ -20,6 +20,10 @@
   <%= submit_tag("Sync") %>
 <% end %>
 
+<% unless @board.nil? %>
+  <h3><%= @board['name'] %></h3>
+<% end %>
+
 <table>
   <% @issues.each do |issue| %>
     <tr>
