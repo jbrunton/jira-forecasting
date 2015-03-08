@@ -17,6 +17,18 @@ class IssuesController < ApplicationController
       issues.each do |issue|
         epic.issues.append(issue)
       end
+
+      started_dates = epic.issues.map{|issue| issue.started}.compact
+      if started_dates.any?
+        epic.started = started_dates.min
+      end
+
+      completed_dates = epic.issues.map{|issue| issue.completed}.compact
+      unless completed_dates.length < issues.length # i.e. no issues are incomplete
+        epic.completed = completed_dates.max
+      end
+      
+      epic.save
     end
     
     @epics = Issue.where(issue_type: 'epic')
