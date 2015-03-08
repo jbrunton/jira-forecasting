@@ -4,6 +4,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string :self
       t.string :key
       t.string :summary
+      t.string :issue_type
 
       t.timestamps null: false
     end

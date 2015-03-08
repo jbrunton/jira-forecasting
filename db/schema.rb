@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20150307184503) do
     t.string   "self"
     t.string   "key"
     t.string   "summary"
+    t.string   "issue_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
