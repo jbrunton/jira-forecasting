@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20150307184503) do
     t.string   "summary"
     t.string   "issue_type"
     t.integer  "epic_id"
+    t.datetime "started"
+    t.datetime "completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

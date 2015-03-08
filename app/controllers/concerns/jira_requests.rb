@@ -13,7 +13,7 @@ module JiraRequests
   end
   
   def request_issues(epic_id)
-    response = do_request("https://jbrunton.atlassian.net/rest/api/2/search?jql=cf[#{EPIC_LINK_FIELD_ID}]=#{epic_id}")
+    response = do_request("https://jbrunton.atlassian.net/rest/api/2/search?expand=changelog&jql=cf[#{EPIC_LINK_FIELD_ID}]=#{epic_id}")
   end
 
 private  

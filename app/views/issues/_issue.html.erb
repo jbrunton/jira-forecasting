@@ -2,8 +2,18 @@
   <th width="10%">
     <a href="<%= issue.self %>"><%= issue.key %></a>
   </th>
-  <td width="80%">
+  <td width="40%">
     <%= issue.summary %>
+  </td>
+  <td width="20%">
+    <% unless issue.started.nil? %>
+      <%= issue.started.strftime('%d %b %Y, %H:%M') %>
+    <% end %>
+  </td>
+  <td width="20%">
+    <% unless issue.completed.nil? %>
+      <%= issue.completed.strftime('%d %b %Y, %H:%M') %>
+    <% end %>
   </td>
   <td width="10%">
     <%= issue.issue_type %>
