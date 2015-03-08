@@ -7,21 +7,22 @@
     
     <%= label_tag(:password, "Password:") %>
     <input type="text" name="password" id="password">
+
+    <%= submit_tag("Sync") %>
   </p>
 
-  <%= submit_tag("Sync") %>
 <% end %>
 
 <% unless @board.nil? %>
   <h3><%= @board['name'] %></h3>
 <% end %>
 
-<table>
-  <% @epics.each do |epic| %>
+<% @epics.each do |epic| %>
+  <table>
     <%= render epic %>
     
     <% epic.issues.each do |issue| %>
       <%= render issue %>
     <% end %>
-  <% end %>
-</table>
+  </table>
+<% end %>

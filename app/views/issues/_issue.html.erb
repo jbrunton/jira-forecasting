@@ -1,11 +1,11 @@
-<tr>
-  <th>
+<tr class="issue <%= issue.issue_type %>">
+  <th width="10%">
     <a href="<%= issue.self %>"><%= issue.key %></a>
   </th>
-  <td>
+  <td width="80%">
     <%= issue.summary %>
   </td>
-  <td>
+  <td width="10%">
     <%= issue.issue_type %>
   </td>
 </tr>
