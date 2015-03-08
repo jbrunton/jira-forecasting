@@ -11,12 +11,11 @@ class IssuesController < ApplicationController
     
     epic_response = request_epics
     epics = parse_issue_response(epic_response)
-    epics.each do |epic_data|
-      epic = Issue.create(epic_data)
-      issue_response = request_issues(epic_data[:key])
+    epics.each do |epic|
+      issue_response = request_issues(epic.key)
       issues = parse_issue_response(issue_response)
       issues.each do |issue|
-        epic.issues.create(issue)
+        epic.issues.append(issue)
       end
     end
     

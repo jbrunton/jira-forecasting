@@ -9,12 +9,12 @@ module IssueParser
   end
 private
   def parse_issue(issue_json)
-    {
+    Issue.create(
       :key => parse_key(issue_json),
       :self => parse_self(issue_json),
       :summary => parse_summary(issue_json),
       :issue_type => parse_issue_type(issue_json)
-    }
+    )
   end
 
   def parse_key(issue_json)
