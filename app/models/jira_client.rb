@@ -8,7 +8,7 @@ class JiraClient
     uri = URI::join(@domain, relative_url)
     request = setup_request(uri)
     response = issue_request(uri, request)
-    response.body
+    JSON.parse(response.body)
   end
 private
   def setup_request(uri)

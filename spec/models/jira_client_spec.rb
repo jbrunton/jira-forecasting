@@ -6,7 +6,7 @@ RSpec.describe JiraClient do
   let(:password) { 's0m3 passw0rd' }
   let(:params) { ActionController::Parameters.new(username: username, password: password) }
 
-  let(:dummy_response) { 'some response' }
+  let(:dummy_response) { '{"foo": "bar"}' }
   
   before(:each) do
     @client = JiraClient.new(domain, params)
@@ -19,7 +19,7 @@ RSpec.describe JiraClient do
 
       response = @client.request(:get, 'some/url')
       
-      expect(response).to eq(dummy_response)
+      expect(response).to eq(JSON.parse(dummy_response))
     end
   end
 end
