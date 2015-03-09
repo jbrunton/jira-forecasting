@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe IssueBuilder do
-  describe "#parse_response" do
+  describe "#build" do
     context "in all cases it" do
       let(:json) {
         <<-END
