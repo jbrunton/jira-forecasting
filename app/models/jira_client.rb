@@ -6,11 +6,20 @@ class JiraClient
   
   def request(method, relative_url)
     uri = URI::join(@domain, relative_url)
-    req = Net::HTTP::Get.new(uri)
-    req.basic_auth @credentials['username'], @credentials['password']
-    res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
-      http.request(req)
+    request = setup_request(uri)
+    response = issue_request(uri, request)
+    response.body
+  end
+private
+  def setup_request(uri)
+    request = Net::HTTP::Get.new(uri)
+    request.basic_auth @credentials['username'], @credentials['password']
+    request
+  end
+  
+  def issue_request(uri, request)
+    Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
+      http.request(request)
     end
-    res.body
   end
 end
