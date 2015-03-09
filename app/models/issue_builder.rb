@@ -5,52 +5,21 @@ class IssueBuilder
   
   def build
     attrs = {
-      :key => parse_key,
-      :self => parse_self,
-      :summary => parse_summary,
-      :issue_type => parse_issue_type
+      :key => key,
+      :self => self_link,
+      :summary => summary,
+      :issue_type => issue_type
     }
     
     if attrs[:issue_type] == 'story'
-      attrs[:started] = parse_started_date
-      attrs[:completed] = parse_completed_date
+      attrs[:started] = started_date
+      attrs[:completed] = completed_date
     end
 
-    Issue.create(attrs)
-  end
-
-private
-  def parse_key
-    @json['key']
+    Issue.new(attrs)
   end
   
-  def parse_self
-    @json['self']
-  end
-  
-  def parse_summary
-    @json['fields']['summary']
-  end
-  
-  def parse_issue_type
-    @json['fields']['issuetype']['name'] == 'Epic' ? 'epic' : 'story'
-  end
-  
-  def is_status_transition(item)
-    item['field'] == "status"
-  end
-  
-  def is_started_transition(item)
-    is_status_transition(item) &&
-      (item['toString'] == "In Progress" || item['toString'] == "Started")
-  end
-  
-  def is_completed_transition(item)
-    is_status_transition(item) &&
-      (item['toString'] == "Done" || item['toString'] == "Closed")
-  end
-  
-  def parse_started_date
+  def started_date
     return nil if @json['changelog'].nil?
 
     histories = @json['changelog']['histories']
@@ -66,7 +35,7 @@ private
     end
   end
   
-  def parse_completed_date
+  def completed_date
     return nil if @json['changelog'].nil?
 
     histories = @json['changelog']['histories']
@@ -81,5 +50,37 @@ private
     else
       nil 
     end
+  end
+  
+
+private
+  def key
+    @json['key']
+  end
+  
+  def self_link
+    @json['self']
+  end
+  
+  def summary
+    @json['fields']['summary']
+  end
+  
+  def issue_type
+    @json['fields']['issuetype']['name'] == 'Epic' ? 'epic' : 'story'
+  end
+  
+  def is_status_transition(item)
+    item['field'] == "status"
+  end
+  
+  def is_started_transition(item)
+    is_status_transition(item) &&
+      (item['toString'] == "In Progress" || item['toString'] == "Started")
+  end
+  
+  def is_completed_transition(item)
+    is_status_transition(item) &&
+      (item['toString'] == "Done" || item['toString'] == "Closed")
   end
 end
