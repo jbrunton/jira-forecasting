@@ -25,8 +25,16 @@ var dispatcher = new WebSocketRails('localhost:3000/websocket');
 // subscribe to the channel
 var channel = dispatcher.subscribe('status');
 
-// bind to a channel event
-channel.bind('status_update', function(message) {
-  alert(message);
-});
-
+(function() {
+  var count, loaded;
+  // bind to a channel event
+  channel.bind('status_update', function(data) {
+    if (data.event == 'loaded_board') {    
+      count = data.size;
+      loaded = 0;
+    } else {
+      loaded += 1;
+    }
+    $('#status').text("Loaded " + loaded + " of " + count + " epics");
+  });
+})();
