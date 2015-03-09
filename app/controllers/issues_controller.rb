@@ -1,6 +1,5 @@
 class IssuesController < ApplicationController
-  include IssueParser
-  include JiraRequests
+  EPIC_LINK_FIELD_ID = 10008
   
   def index
     @epics = Issue.where(issue_type: 'epic')
@@ -9,11 +8,20 @@ class IssuesController < ApplicationController
   def sync
     Issue.delete_all
     
-    epic_response = request_epics
-    epics = parse_issue_response(epic_response)
+    jira_client = JiraClient.new('https://jbrunton.atlassian.net', params)
+    
+    raw_epics = jira_client.search_issues(query: 'project%20=%20%22Demo%20Project%22%20AND%20issuetype%20=%20%22Epic%22')
+    epics = raw_epics.map do |raw_epic|
+      IssueBuilder.new(raw_epic).build
+    end
     epics.each do |epic|
-      issue_response = request_issues(epic.key)
-      issues = parse_issue_response(issue_response)
+      raw_issues = jira_client.search_issues(
+        expand: ['changelog'],
+        query: "cf[#{EPIC_LINK_FIELD_ID}]=#{epic.key}")
+
+      issues = raw_issues.map do |raw_issue|
+        IssueBuilder.new(raw_issue).build
+      end
       issues.each do |issue|
         epic.issues.append(issue)
       end

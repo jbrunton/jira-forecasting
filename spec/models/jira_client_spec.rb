@@ -35,5 +35,11 @@ RSpec.describe JiraClient do
       
       expect(response).to eq([])
     end
+    
+    it "expands the given fields" do
+      stub_request(:get, "https://#{username}:#{password}@www.example.com:80/rest/api/2/search?maxResults=9999&expand=foo,bar")
+        .to_return(body: issues_response)
+      response = @client.search_issues(expand: ['foo', 'bar'])
+    end
   end
 end

@@ -12,7 +12,10 @@ class JiraClient
   end
   
   def search_issues(opts)
-    response = request(:get, "rest/api/2/search?maxResults=9999&jql=#{opts[:query]}")
+    url = "rest/api/2/search?maxResults=9999"
+    url += "&expand=#{opts[:expand].join(',')}" if opts[:expand]
+    url += "&jql=#{opts[:query]}" if opts[:query]
+    response = request(:get, url)
     response['issues']
   end
   
