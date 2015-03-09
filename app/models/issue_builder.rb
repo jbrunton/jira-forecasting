@@ -16,7 +16,7 @@ class IssueBuilder
       attrs[:completed] = parse_completed_date
     end
 
-    Issue.create(attrs)
+    Issue.new(attrs)
   end
 
 private
