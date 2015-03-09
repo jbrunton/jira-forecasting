@@ -10,6 +10,12 @@ class JiraClient
     response = issue_request(uri, request)
     JSON.parse(response.body)
   end
+  
+  def search_issues(opts)
+    response = request(:get, "rest/api/2/search?maxResults=9999&jql=#{opts[:query]}")
+    response['issues']
+  end
+  
 private
   def setup_request(uri)
     request = Net::HTTP::Get.new(uri)

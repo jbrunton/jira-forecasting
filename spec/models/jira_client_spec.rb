@@ -7,6 +7,9 @@ RSpec.describe JiraClient do
   let(:params) { ActionController::Parameters.new(username: username, password: password) }
 
   let(:dummy_response) { '{"foo": "bar"}' }
+  let(:issues_response) { '{"issues": []}' }
+  
+  let(:dummy_query) { 'issuetype=Epic' }
   
   before(:each) do
     @client = JiraClient.new(domain, params)
@@ -20,6 +23,17 @@ RSpec.describe JiraClient do
       response = @client.request(:get, 'some/url')
       
       expect(response).to eq(JSON.parse(dummy_response))
+    end
+  end
+  
+  describe "#search_issues" do
+    it "searches for issues with the given query" do
+      stub_request(:get, "https://#{username}:#{password}@www.example.com:80/rest/api/2/search?maxResults=9999&jql=#{dummy_query}")
+        .to_return(body: issues_response)
+        
+      response = @client.search_issues(query: dummy_query)
+      
+      expect(response).to eq([])
     end
   end
 end
