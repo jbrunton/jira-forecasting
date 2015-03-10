@@ -45,6 +45,11 @@ class IssuesController < ApplicationController
   def wip
     WipHistory.recompute    
     @wip_histories = WipHistory.all
+    
+    respond_to do |format|
+      format.html
+      format.json { render json: @wip_histories }
+    end
   end
   
 private
