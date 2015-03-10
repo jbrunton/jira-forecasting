@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'issues#index'
   
+  resources :issues
+
   post 'issues/sync' => 'issues#sync'
   
   get 'issues/events' => 'issues#events'
