@@ -3,7 +3,7 @@
   
   <script>
   $(function () {
-    $.when($.get('wip.json')).then(function(histories) {
+    Q.all([$.get('wip.json'), $.get('cycle_time.json')]).spread(function(wipHistories, epics) {
       $('#container').highcharts({
           chart: {
               type: 'spline'
@@ -46,7 +46,7 @@
           tooltip: {
               formatter: function () {
                   if (this.series.name == 'Cycle Time') { 
-                    return '<b><a href="https://jbrunton.atlassian.net/browse/"' + this.point.key + '>' + this.point.key + '</a></b><br />CT: ' + this.y + ' days';
+                    return '<b><a href="https://jbrunton.atlassian.net/browse/"' + this.point.key + '>' + this.point.key + '</a></b><br />CT: ' + this.y.toFixed(1) + ' days';
                   } else {
                     return 'WIP: ' + this.y;                    
                   }
@@ -58,21 +58,18 @@
               name: 'Cycle Time',
               yAxis: 0,
               color: '#F66',
-              data: [
-                  {x: Date.UTC(2014,  9, 18), y: 1, key: 'DEMO-101'},
-                  {x: Date.UTC(2014,  10,18), y: 5, key: 'DEMO-102'},
-                  {x: Date.UTC(2014,  0, 18), y: 8, key: 'DEMO-103'},
-                  {x: Date.UTC(2014,  3, 18), y: 5, key: 'DEMO-104'},
-                  {x: Date.UTC(2014,  5, 18), y: 6, key: 'DEMO-105'}
-              ]
+              data: _(epics).map(function(epic) { return { x: Date.parse(epic.completed), y: epic.cycle_time, key: epic.key }; }).value()
           }, {
               name: 'WIP',
               yAxis: 1,
               color: '#66F',
+              marker: {
+                enabled: false
+              },
               // Define the data points. All series have a dummy year
               // of 1970/71 in order to be compared on the same x axis. Note
               // that in JavaScript, months start at 0 for January, 1 for February etc.
-              data: _(histories).map(function(history) { return { x: Date.parse(history.date), y: history.wip }; }).value()
+              data: _(wipHistories).map(function(history) { return { x: Date.parse(history.date), y: history.wip }; }).value()
           }]
       });      
     });

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   get 'issues/wip' => 'issues#wip'
 
+  get 'issues/cycle_time' => 'issues#cycle_time'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -52,6 +52,15 @@ class IssuesController < ApplicationController
     end
   end
   
+  def cycle_time
+    epics = Issue.where(issue_type: 'epic').
+      select{ |epic| !epic.completed.nil? }.
+      sort_by{ |epic| epic.completed }
+    respond_to do |format|
+      format.json { render json: epics.to_json(:methods => [:cycle_time]) }
+    end
+  end
+  
 private
   def select_rapid_board
     rapid_boards = request_rapid_boards
