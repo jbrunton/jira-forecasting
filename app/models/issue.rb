@@ -4,4 +4,8 @@ class Issue < ActiveRecord::Base
   has_many :issues, class_name: "Issue", foreign_key: "epic_id"
  
   belongs_to :epic, class_name: "Issue"
+  
+  def cycle_time
+    (completed - started) / 1.day unless completed.nil?
+  end
 end

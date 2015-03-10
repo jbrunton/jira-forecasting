@@ -1,0 +1,89 @@
+<div class="content-full">
+  <h1>WIP</h1>
+  
+  <script>
+  $(function () {
+    Q.all([$.get('wip.json'), $.get('cycle_time.json')]).spread(function(wipHistories, epics) {
+      $('#container').highcharts({
+          chart: {
+              type: 'spline'
+          },
+          title: {
+              text: 'Epic Cycle Time'
+          },
+          subtitle: {
+              text: 'Historical Cycle Time and WIP values'
+          },
+          xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: { // don't display the dummy year
+                  month: '%e. %b',
+                  year: '%b'
+              },
+              title: {
+                  text: 'Date'
+              }
+          },
+          yAxis: [{
+            title: {
+                text: 'Cycle Time'
+            },
+            min: 0
+          }, {
+              title: {
+                  text: 'WIP'
+              },
+              opposite: true,
+              min: 0
+          }],
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
+          tooltip: {
+              formatter: function () {
+                  if (this.series.name == 'Cycle Time') { 
+                    return '<b><a href="https://jbrunton.atlassian.net/browse/"' + this.point.key + '>' + this.point.key + '</a></b><br />CT: ' + this.y.toFixed(1) + ' days';
+                  } else {
+                    return 'WIP: ' + this.y;                    
+                  }
+              }
+          },
+
+
+          series: [{
+              name: 'Cycle Time',
+              yAxis: 0,
+              color: '#F66',
+              data: _(epics).map(function(epic) { return { x: Date.parse(epic.completed), y: epic.cycle_time, key: epic.key }; }).value()
+          }, {
+              name: 'WIP',
+              yAxis: 1,
+              color: '#66F',
+              marker: {
+                enabled: false
+              },
+              // Define the data points. All series have a dummy year
+              // of 1970/71 in order to be compared on the same x axis. Note
+              // that in JavaScript, months start at 0 for January, 1 for February etc.
+              data: _(wipHistories).map(function(history) { return { x: Date.parse(history.date), y: history.wip }; }).value()
+          }]
+      });      
+    });
+  });
+  </script>
+  
+  <div id="container" style="width:100%; height:400px;"></div>
+  
+  <table>
+    <% @wip_histories.each do |history| %>
+      <tr>
+        <td><%= history.date %></td>
+        <td><%= history.wip %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

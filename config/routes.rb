@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   root 'issues#index'
   
   post 'issues/sync' => 'issues#sync'
+  
+  get 'issues/events' => 'issues#events'
+
+  get 'issues/wip' => 'issues#wip'
+
+  get 'issues/cycle_time' => 'issues#cycle_time'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150307184503) do
+ActiveRecord::Schema.define(version: 20150310092203) do
+
+  create_table "events", force: :cascade do |t|
+    t.datetime "date"
+    t.string   "event_type"
+    t.integer  "epic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "events", ["epic_id"], name: "index_events_on_epic_id"
 
   create_table "issues", force: :cascade do |t|
     t.string   "self"
@@ -26,5 +36,12 @@ ActiveRecord::Schema.define(version: 20150307184503) do
   end
 
   add_index "issues", ["epic_id"], name: "index_issues_on_epic_id"
+
+  create_table "wip_histories", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "wip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end

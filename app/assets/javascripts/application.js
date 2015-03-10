@@ -14,6 +14,9 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require highcharts
+//= require lodash
+//= require q
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
