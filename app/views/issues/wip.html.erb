@@ -1,0 +1,12 @@
+<div class="content-full">
+  <h1>WIP</h1>
+  
+  <table>
+    <% @wip_histories.each do |history| %>
+      <tr>
+        <td><%= history.date %></td>
+        <td><%= history.wip %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

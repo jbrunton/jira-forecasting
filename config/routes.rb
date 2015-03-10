@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   
   get 'issues/events' => 'issues#events'
 
+  get 'issues/wip' => 'issues#wip'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

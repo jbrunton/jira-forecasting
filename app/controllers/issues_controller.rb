@@ -42,6 +42,11 @@ class IssuesController < ApplicationController
     @events = Event.compute_all
   end
   
+  def wip
+    WipHistory.recompute    
+    @wip_histories = WipHistory.all
+  end
+  
 private
   def select_rapid_board
     rapid_boards = request_rapid_boards
