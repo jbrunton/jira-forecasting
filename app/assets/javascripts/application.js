@@ -15,6 +15,7 @@
 //= require foundation
 //= require turbolinks
 //= require highcharts
+//= require lodash
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
