@@ -1,0 +1,13 @@
+<div class="content-full">
+  <h1>Events</h1>
+  
+  <table>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.time %></td>
+        <td><%= event.event_type %></td>
+        <td><%= event.epic.key %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

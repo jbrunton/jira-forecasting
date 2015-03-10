@@ -38,6 +38,10 @@ class IssuesController < ApplicationController
     render "index"
   end
   
+  def events
+    @events = Event.compute_all
+  end
+  
 private
   def select_rapid_board
     rapid_boards = request_rapid_boards
