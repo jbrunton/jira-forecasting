@@ -5,6 +5,10 @@ class IssuesController < ApplicationController
     @epics = Issue.where(issue_type: 'epic')
   end
   
+  def show
+    @issue = Issue.find(params[:id])
+  end
+  
   def sync
     Issue.delete_all
     

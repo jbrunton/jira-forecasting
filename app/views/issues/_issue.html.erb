@@ -1,6 +1,8 @@
 <tr class="issue <%= issue.issue_type %>">
   <th width="10%">
-    <a href="<%= issue.self %>"><%= issue.key %></a>
+    <a href="<%= url_for(issue) %>">
+      <%= issue.key %>
+    </a>
   </th>
   <td width="40%">
     <%= issue.summary %>
