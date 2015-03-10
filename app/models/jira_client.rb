@@ -16,7 +16,9 @@ class JiraClient
     url += "&expand=#{opts[:expand].join(',')}" if opts[:expand]
     url += "&jql=#{opts[:query]}" if opts[:query]
     response = request(:get, url)
-    response['issues']
+    response['issues'].map do |raw_issue|
+      IssueBuilder.new(raw_issue).build
+    end
   end
   
 private
