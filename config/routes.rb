@@ -5,15 +5,15 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'issues#index'
   
-  post 'issues/sync' => 'issues#sync'
-  
-  get 'issues/events' => 'issues#events'
-
-  get 'issues/wip' => 'issues#wip'
-
-  get 'issues/cycle_time' => 'issues#cycle_time'
-
   resources :issues
+  
+  get 'sync' => 'sync#index'
+  post 'sync/sync' => 'sync#sync'
+  
+  get 'api/wip' => 'api#wip'
+  get 'api/cycle_time' => 'api#cycle_time'
+  
+  get 'reports/cycle_time' => 'reports#cycle_time'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
