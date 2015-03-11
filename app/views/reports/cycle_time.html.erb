@@ -44,9 +44,10 @@
               }
           },
           tooltip: {
+              useHTML: true,
               formatter: function () {
                   if (this.series.name == 'Cycle Time') { 
-                    return '<b><a href="https://jbrunton.atlassian.net/browse/"' + this.point.key + '>' + this.point.key + '</a></b><br />CT: ' + this.y.toFixed(1) + ' days';
+                    return '<b><a href="#' + this.point.key + '">' + this.point.key + ' ' + this.point.summary + '</a></b><br />CT: ' + this.y.toFixed(1) + ' days';
                   } else {
                     return 'WIP: ' + this.y;                    
                   }
@@ -58,7 +59,7 @@
               name: 'Cycle Time',
               yAxis: 0,
               color: '#F66',
-              data: _(epics).map(function(epic) { return { x: Date.parse(epic.completed), y: epic.cycle_time, key: epic.key }; }).value()
+              data: _(epics).map(function(epic) { return { x: Date.parse(epic.completed), y: epic.cycle_time, key: epic.key, summary: epic.summary }; }).value()
           }, {
               name: 'WIP',
               yAxis: 1,
@@ -76,6 +77,37 @@
   });
   </script>
   
-  <div id="container" style="width:100%; height:400px;"></div>
+  <div id="container" style="width: 100%; height: 600px;"></div>
+  
+  <table>
+    <tr>
+      <td width="10%">
+        Key
+      </td>
+      <td width="40%">
+        Summary
+      </td>
+      <td width="20%">
+        Started
+      </td>
+      <td width="20%">
+        Completed
+      </td>
+      <td width="10%">
+        Cycle Time
+      </td>
+    </tr>
+    
+  </table>
+
+  <% @epics.each do |epic| %>
+    <table>
+      <%= render epic %>
+    
+      <% epic.issues.each do |issue| %>
+        <%= render issue %>
+      <% end %>
+    </table>
+  <% end %>
 
 </div>
