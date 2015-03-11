@@ -13,21 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150310092203) do
 
-  create_table "events", force: :cascade do |t|
-    t.datetime "date"
-    t.string   "event_type"
-    t.integer  "epic_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "events", ["epic_id"], name: "index_events_on_epic_id"
-
   create_table "issues", force: :cascade do |t|
     t.string   "self"
     t.string   "key"
     t.string   "summary"
     t.string   "issue_type"
+    t.string   "size"
     t.integer  "epic_id"
     t.datetime "started"
     t.datetime "completed"

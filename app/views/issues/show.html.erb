@@ -25,6 +25,12 @@
       <td>Cycle Time</td>
       <td><%= @issue.cycle_time %></td>
     </tr>
+    <% if @issue.issue_type == 'epic' %>
+      <tr>
+        <td>Size</td>
+        <td><%= @issue.size %></td>
+      </tr>
+    <% end %>
   </table>
   
   <% if @issue.issue_type == 'epic' %>
