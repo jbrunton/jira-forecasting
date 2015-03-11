@@ -5,9 +5,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'issues#index'
   
-  post 'issues/sync' => 'issues#sync'
-  
   resources :issues
+  
+  get 'sync' => 'sync#index'
+  post 'sync/sync' => 'sync#sync'
   
   get 'api/wip' => 'api#wip'
   get 'api/cycle_time' => 'api#cycle_time'
