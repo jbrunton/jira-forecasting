@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  def cycle_time
+  def epic_cycle_times
     @epics = Issue.epics.
       select{ |epic| epic.completed }.
       sort_by{ |epic| epic.cycle_time }
