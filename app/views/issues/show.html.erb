@@ -2,6 +2,10 @@
   <h1><%= @issue.summary %></h1>
   <table>
     <tr>
+      <td>Type</td>
+      <td><%= @issue.issue_type %></td>
+    </tr>
+    <tr>
       <td>Key</td>
       <td><%= @issue.key %></td>
     </tr>
@@ -22,4 +26,65 @@
       <td><%= @issue.cycle_time %></td>
     </tr>
   </table>
+  
+  <% if @issue.issue_type == 'epic' %>
+    <h3>Issues</h3>
+    
+    <% if @issue.issues.empty? %>
+      <p>No issues in epic.</p>
+    <% else %>
+      <table>
+        <tr>
+          <td width="10%">
+            Key
+          </td>
+          <td width="40%">
+            Summary
+          </td>
+          <td width="20%">
+            Started
+          </td>
+          <td width="20%">
+            Completed
+          </td>
+          <td width="10%">
+            Cycle Time
+          </td>
+        </tr>
+        <% @issue.issues.each do |issue| %>
+          <%= render issue %>
+        <% end %>
+      </table>
+    <% end %>
+  
+  <% else %>
+  
+    <% unless @issue.epic.nil? %>
+    
+      <h3>Associated Epic</h3>
+    
+      <table>
+        <tr>
+          <td width="10%">
+            Key
+          </td>
+          <td width="40%">
+            Summary
+          </td>
+          <td width="20%">
+            Started
+          </td>
+          <td width="20%">
+            Completed
+          </td>
+          <td width="10%">
+            Cycle Time
+          </td>
+        </tr>
+        <%= render @issue.epic %>
+      </table>
+    
+    <% end %>
+  
+  <% end %>
 </div>
