@@ -37,32 +37,11 @@ class IssuesController < ApplicationController
       epic.save
     end
     
+    WipHistory.recompute    
+    
     @epics = Issue.where(issue_type: 'epic')
     
     render "index"
-  end
-  
-  def events
-    @events = Event.compute_all
-  end
-  
-  def wip
-    WipHistory.recompute    
-    @wip_histories = WipHistory.all
-    
-    respond_to do |format|
-      format.html
-      format.json { render json: @wip_histories }
-    end
-  end
-  
-  def cycle_time
-    epics = Issue.where(issue_type: 'epic').
-      select{ |epic| !epic.completed.nil? }.
-      sort_by{ |epic| epic.completed }
-    respond_to do |format|
-      format.json { render json: epics.to_json(:methods => [:cycle_time]) }
-    end
   end
   
 private

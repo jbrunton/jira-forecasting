@@ -3,7 +3,7 @@
   
   <script>
   $(function () {
-    Q.all([$.get('wip.json'), $.get('cycle_time.json')]).spread(function(wipHistories, epics) {
+    Q.all([$.get('/api/wip.json'), $.get('/api/cycle_time.json')]).spread(function(wipHistories, epics) {
       $('#container').highcharts({
           chart: {
               type: 'spline'
@@ -77,13 +77,5 @@
   </script>
   
   <div id="container" style="width:100%; height:400px;"></div>
-  
-  <table>
-    <% @wip_histories.each do |history| %>
-      <tr>
-        <td><%= history.date %></td>
-        <td><%= history.wip %></td>
-      </tr>
-    <% end %>
-  </table>
+
 </div>

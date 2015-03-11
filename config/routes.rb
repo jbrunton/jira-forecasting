@@ -7,13 +7,12 @@ Rails.application.routes.draw do
   
   post 'issues/sync' => 'issues#sync'
   
-  get 'issues/events' => 'issues#events'
-
-  get 'issues/wip' => 'issues#wip'
-
-  get 'issues/cycle_time' => 'issues#cycle_time'
-
   resources :issues
+  
+  get 'api/wip' => 'api#wip'
+  get 'api/cycle_time' => 'api#cycle_time'
+  
+  get 'reports/cycle_time' => 'reports#cycle_time'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
