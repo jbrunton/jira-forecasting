@@ -9,15 +9,28 @@ class Issue < ActiveRecord::Base
     (completed - started) / 1.day unless completed.nil?
   end
   
-  def compute_size!
-    size_match = /\[(S|M|L)\]/.match(summary)
-    self.size = size_match[1] unless size_match.nil?
-  end
-  
   def self.recompute_sizes!
-    epics.each do |epic|
-      epic.compute_size!
-      epic.save
+    sorted_epics = epics.
+      select{ |epic| epic.cycle_time }.
+      sort_by{ |epic| epic.cycle_time }
+      
+    incomplete_epics = epics.
+      select{ |epic| epic.cycle_time.nil? }
+      
+    quartile_size = sorted_epics.length / 4
+    interquartile_size = sorted_epics.length - quartile_size * 2
+    
+    first_quartile = sorted_epics.take(quartile_size)
+    interquartile = sorted_epics.drop(quartile_size).take(interquartile_size)
+    last_quartile = sorted_epics.drop(quartile_size + interquartile_size)
+    
+    {first_quartile => 'S', interquartile => 'M', last_quartile => 'L', incomplete_epics => nil}.each do |epics, size|
+      epics.each do |epic|
+        size_match = /\[(S|M|L)\]/.match(epic.summary)
+        epic.size = size_match[1] unless size_match.nil?
+        epic.size = size if epic.size.nil?
+        epic.save
+      end
     end
   end
   
