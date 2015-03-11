@@ -11,7 +11,7 @@ RSpec.describe Issue, type: :model do
     end
     
     context "otherwise" do
-      it "set the size of the epic based on the interquartile range" do
+      it "sets the size of the epic based on the interquartile range" do
         epics = [
           create(:epic, :completed, cycle_time: 4),
           create(:epic, :completed, cycle_time: 2),
