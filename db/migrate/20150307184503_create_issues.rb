@@ -5,6 +5,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string :key
       t.string :summary
       t.string :issue_type
+      t.string :size
       t.references :epic, index: true
       t.timestamp :started
       t.timestamp :completed

@@ -32,7 +32,9 @@ class SyncController < ApplicationController
       epic.save
     end
     
-    WipHistory.recompute    
+    Issue.recompute_sizes!
+    
+    WipHistory.recompute
     
     @epics = Issue.where(issue_type: 'epic')
     

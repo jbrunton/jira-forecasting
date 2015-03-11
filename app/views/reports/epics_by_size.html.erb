@@ -1,0 +1,37 @@
+<div class="content-full">
+  <h1>Epics By Size</h1>
+
+  <% @epics_by_size.each do |size, epics| %>
+    <h3><%= "#{size}-Sized Epics" %></h3>
+    
+    <table>
+      <tr>
+        <td width="10%">
+          Key
+        </td>
+        <td width="40%">
+          Summary
+        </td>
+        <td width="20%">
+          Started
+        </td>
+        <td width="20%">
+          Completed
+        </td>
+        <td width="10%">
+          Cycle Time
+        </td>
+      </tr>    
+    </table>
+
+    <% epics.each do |epic| %>
+      <table>
+        <%= render epic %>
+    
+        <% epic.issues.each do |issue| %>
+          <%= render issue %>
+        <% end %>
+      </table>
+    <% end %>
+  <% end %>
+</div>
