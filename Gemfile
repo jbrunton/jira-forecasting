@@ -48,5 +48,6 @@ group :development, :test do
 end
 
 gem 'webmock', group: :test
+gem 'factory_girl', group: :test
 gem "codeclimate-test-reporter", group: :test, require: nil
 
