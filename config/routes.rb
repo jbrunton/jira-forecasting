@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'api/cycle_time' => 'api#cycle_time'
   
   get 'reports/cycle_time' => 'reports#cycle_time'
+  get 'reports/epics_by_size' => 'reports#epics_by_size'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
