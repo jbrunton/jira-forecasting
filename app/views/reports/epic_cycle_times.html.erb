@@ -3,7 +3,18 @@
   
   <script>
   $(function () {
-    Q.all([$.get('/api/wip.json'), $.get('/api/cycle_time.json')]).spread(function(wipHistories, epics) {
+    
+    function formatIssueLink(issue) {
+      return '<b><a href="#'
+                      + issue.key
+                      + '">'
+                      + issue.key
+                      + ' '
+                      + issue.summary
+                      + '</a></b>';
+    }
+    
+    Q.all([$.get('/api/wip.json'), $.get('/api/cycle_time.json')]).spread(function(historiesByDate, epics) {
       $('#container').highcharts({
           chart: {
               type: 'spline'
@@ -46,11 +57,19 @@
           tooltip: {
               useHTML: true,
               formatter: function () {
+                  var html = "";
                   if (this.series.name == 'Cycle Time') { 
-                    return '<b><a href="#' + this.point.key + '">' + this.point.key + ' ' + this.point.summary + '</a></b><br />CT: ' + this.y.toFixed(1) + ' days';
+                    html += formatIssueLink(this.point)
+                      + '<br />CT: '
+                      + this.y.toFixed(1)
+                      + ' days';
                   } else {
-                    return 'WIP: ' + this.y;                    
+                    html += '<b>WIP: ' + this.y;
+                    _(this.point.histories).each(function(history) {
+                      html += '<br/>' + formatIssueLink(history.issue);
+                    }).value();
                   }
+                  return html;
               }
           },
 
@@ -59,7 +78,14 @@
               name: 'Cycle Time',
               yAxis: 0,
               color: '#F66',
-              data: _(epics).map(function(epic) { return { x: Date.parse(epic.completed), y: epic.cycle_time, key: epic.key, summary: epic.summary }; }).value()
+              data: _(epics).map(function(epic) {
+                return {
+                  x: Date.parse(epic.completed),
+                  y: epic.cycle_time,
+                  key: epic.key,
+                  summary: epic.summary
+                };
+              }).value()
           }, {
               name: 'WIP',
               yAxis: 1,
@@ -70,7 +96,13 @@
               // Define the data points. All series have a dummy year
               // of 1970/71 in order to be compared on the same x axis. Note
               // that in JavaScript, months start at 0 for January, 1 for February etc.
-              data: _(wipHistories).map(function(history) { return { x: Date.parse(history.date), y: history.wip }; }).value()
+              data: _(historiesByDate).map(function(histories, date) {
+                return {
+                  x: Date.parse(date),
+                  y: histories.length,
+                  histories: histories
+                };
+              }).value()
           }]
       });      
     });
