@@ -30,9 +30,11 @@ ActiveRecord::Schema.define(version: 20150310092203) do
 
   create_table "wip_histories", force: :cascade do |t|
     t.date     "date"
-    t.integer  "wip"
+    t.integer  "issue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "wip_histories", ["issue_id"], name: "index_wip_histories_on_issue_id"
 
 end

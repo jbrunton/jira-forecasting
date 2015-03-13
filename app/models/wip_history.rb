@@ -1,4 +1,6 @@
 class WipHistory < ActiveRecord::Base
+  belongs_to :issue
+  
   def self.recompute
     WipHistory.delete_all
     
@@ -10,15 +12,17 @@ class WipHistory < ActiveRecord::Base
     from_date = events.first.time.to_date
     to_date = events.last.time.to_date + 1.day
     
-    wip = 0
+    epics = []
     dates = date_range(from_date, to_date)
     range = dates.each do |date|
       events_for_day = events.select{ |e| date <= e.time && e.time < date + 1.day }
-      started = events_for_day.count{ |e| e.event_type == 'started' }
-      completed = events_for_day.count{ |e| e.event_type == 'completed' }
-      wip += (started - completed)
+      started_events = events_for_day.select{ |e| e.event_type == 'started' }
+      completed_events = events_for_day.select{ |e| e.event_type == 'completed' }
+      
+      started_events.each{ |event| epics << event.epic }
+      completed_events.each{ |event| epics.delete(event.epic) }
 
-      WipHistory.create(date: date, wip: wip)
+      epics.each{ |epic| WipHistory.create(date: date, issue: epic) }
     end
   end
   
