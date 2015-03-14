@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :sync]
 
   # GET /projects
   # GET /projects.json
@@ -59,6 +59,45 @@ class ProjectsController < ApplicationController
       format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def sync
+    Issue.delete_all
+    
+    jira_client = JiraClient.new(@project.domain, params)
+    
+    rapid_board = jira_client.get_rapid_board(@project.rapid_board_id)
+    
+    epics = jira_client.search_issues(query: "issuetype=Epic AND " + rapid_board.query)
+    epics.each do |epic|
+      issues = jira_client.search_issues(
+        expand: ['changelog'],
+        query: "\"Epic Link\"=#{epic.key}")
+
+      issues.each do |issue|
+        epic.issues.append(issue)
+      end
+
+      started_dates = epic.issues.map{|issue| issue.started}.compact
+      if started_dates.any?
+        epic.started = started_dates.min
+      end
+
+      completed_dates = epic.issues.map{|issue| issue.completed}.compact
+      unless completed_dates.length < issues.length # i.e. no issues are incomplete
+        epic.completed = completed_dates.max
+      end
+      
+      epic.save
+    end
+    
+    Issue.recompute_sizes!
+    
+    WipHistory.recompute
+    
+    @epics = Issue.where(issue_type: 'epic')
+    
+    redirect_to controller: 'issues', action: 'index'
   end
 
   private
