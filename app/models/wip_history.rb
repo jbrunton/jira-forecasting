@@ -1,10 +1,8 @@
 class WipHistory < ActiveRecord::Base
   belongs_to :issue
   
-  def self.recompute
-    WipHistory.delete_all
-    
-    events = Event.compute_all
+  def self.compute!(project)
+    events = Event.compute_all!(project)
     return if events.length == 0
     
     events_by_date = events.group_by{ |e| e.time.to_date }

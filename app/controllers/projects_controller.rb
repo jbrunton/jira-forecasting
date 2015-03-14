@@ -62,7 +62,7 @@ class ProjectsController < ApplicationController
   end
   
   def sync
-    Issue.delete_all
+    @project.issues.destroy_all
     
     jira_client = JiraClient.new(@project.domain, params)
     
@@ -93,13 +93,11 @@ class ProjectsController < ApplicationController
       epic.save
     end
     
-    Issue.recompute_sizes!
+    Issue.compute_sizes!(@project)
     
-    WipHistory.recompute
+    WipHistory.compute!(@project)
     
-    @epics = Issue.where(issue_type: 'epic')
-    
-    redirect_to controller: 'issues', action: 'index'
+    redirect_to @project
   end
 
   private
