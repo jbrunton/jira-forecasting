@@ -8,7 +8,7 @@
       <th>Domain</th>
       <th>Rapid board</th>
       <th>Name</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -18,9 +18,10 @@
         <td><%= project.domain %></td>
         <td><%= project.rapid_board_id %></td>
         <td><%= project.name %></td>
-        <td><%= link_to 'Show', project %></td>
+        <td><%= link_to 'View', project %></td>
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Reports', project_reports_path(project) %>
       </tr>
     <% end %>
   </tbody>

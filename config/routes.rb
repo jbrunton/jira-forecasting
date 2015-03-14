@@ -7,6 +7,11 @@ Rails.application.routes.draw do
     end
     
     resources :issues
+    
+    resource :reports do
+      get 'epic_cycle_times'
+      get 'epics_by_size'
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -18,9 +23,6 @@ Rails.application.routes.draw do
   get 'api/wip' => 'api#wip'
   get 'api/cycle_time' => 'api#cycle_time'
   
-  get 'reports/epic_cycle_times' => 'reports#epic_cycle_times'
-  get 'reports/epics_by_size' => 'reports#epics_by_size'
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
