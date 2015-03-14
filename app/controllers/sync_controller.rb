@@ -1,6 +1,4 @@
 class SyncController < ApplicationController
-  EPIC_LINK_FIELD_ID = 10008
-  
   def index
   end
   
@@ -15,7 +13,7 @@ class SyncController < ApplicationController
     epics.each do |epic|
       issues = jira_client.search_issues(
         expand: ['changelog'],
-        query: "cf[#{EPIC_LINK_FIELD_ID}]=#{epic.key}")
+        query: "\"Epic Link\"=#{epic.key}")
 
       issues.each do |issue|
         epic.issues.append(issue)
