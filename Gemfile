@@ -51,3 +51,5 @@ gem 'webmock', group: :test
 gem 'factory_girl', group: :test
 gem "codeclimate-test-reporter", group: :test, require: nil
 
+gem 'guard', group: :development
+gem 'guard-rspec', group: :development, require: false
