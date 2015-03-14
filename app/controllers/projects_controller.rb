@@ -76,6 +76,7 @@ class ProjectsController < ApplicationController
 
       issues.each do |issue|
         epic.issues.append(issue)
+        issue.project = @project
       end
 
       started_dates = epic.issues.map{|issue| issue.started}.compact
@@ -88,6 +89,7 @@ class ProjectsController < ApplicationController
         epic.completed = completed_dates.max
       end
       
+      epic.project = @project
       epic.save
     end
     

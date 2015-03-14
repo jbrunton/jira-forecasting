@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150314144215) do
+ActiveRecord::Schema.define(version: 3) do
 
   create_table "issues", force: :cascade do |t|
     t.string   "self"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20150314144215) do
     t.string   "issue_type"
     t.string   "size"
     t.integer  "epic_id"
+    t.integer  "project_id"
     t.datetime "started"
     t.datetime "completed"
     t.datetime "created_at", null: false
