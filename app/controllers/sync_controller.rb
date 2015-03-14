@@ -7,9 +7,11 @@ class SyncController < ApplicationController
   def sync
     Issue.delete_all
     
-    jira_client = JiraClient.new('https://jbrunton.atlassian.net', params)
+    jira_client = JiraClient.new(params['domain'], params)
     
-    epics = jira_client.search_issues(query: 'project%20=%20%22Demo%20Project%22%20AND%20issuetype%20=%20%22Epic%22')
+    rapid_board = jira_client.get_rapid_board(params['rapid_board_id'].to_i)
+    
+    epics = jira_client.search_issues(query: "issuetype=Epic AND " + rapid_board.query)
     epics.each do |epic|
       issues = jira_client.search_issues(
         expand: ['changelog'],

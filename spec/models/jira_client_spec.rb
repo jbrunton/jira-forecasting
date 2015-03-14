@@ -8,6 +8,7 @@ RSpec.describe JiraClient do
 
   let(:dummy_response) { '{"foo": "bar"}' }
   let(:issues_response) { '{"issues": []}' }
+  let(:rapid_views_response) { '{"views": []}' }
   
   let(:dummy_query) { 'issuetype=Epic' }
   
@@ -40,6 +41,17 @@ RSpec.describe JiraClient do
       stub_request(:get, "https://#{username}:#{password}@www.example.com:80/rest/api/2/search?maxResults=9999&expand=foo,bar")
         .to_return(body: issues_response)
       response = @client.search_issues(expand: ['foo', 'bar'])
+    end
+  end
+  
+  describe "#get_rapid_boards" do
+    it "fetches the rapid views for the domain" do
+      stub_request(:get, "https://#{username}:#{password}@www.example.com:80/rest/greenhopper/1.0/rapidviews/list")
+        .to_return(body: rapid_views_response)
+        
+      response = @client.get_rapid_boards
+      
+      expect(response).to eq([])
     end
   end
 end
