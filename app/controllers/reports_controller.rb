@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_action :set_project
+  before_action :set_project, :set_filter
   
   def show
   end
@@ -18,7 +18,7 @@ class ReportsController < ApplicationController
   
   def forecast
     if params
-      epics = @project.epics.select{ |epic| epic.completed }
+      epics = @project.epics.select{ |epic| epic.cycle_time && @filter.allow_issue(epic) }
       opts = {}
       opts.merge!({'S' => params[:small_count].to_i}) if params[:small_count].to_i > 0
       opts.merge!({'M' => params[:medium_count].to_i}) if params[:medium_count].to_i > 0
@@ -32,4 +32,8 @@ private
   def set_project
     @project = Project.find(params[:project_id]) if params[:project_id]
   end 
+  
+  def set_filter
+    @filter = Filter.new(params[:filter] || "")
+  end
 end

@@ -6,10 +6,12 @@ class Filter
   end
   
   def allow_date(date)
-    if @date_ranges.length > 0
-      @date_ranges.select{ |range| range[0] <= date && date <= range[1] }.length > 0
-    else
-      true
-    end
+    return true if @date_ranges.empty?
+    @date_ranges.select{ |range| range[0] <= date && date <= range[1] }.length > 0
+  end
+  
+  def allow_issue(issue)
+    return true if @date_ranges.empty?
+    @date_ranges.select{ |range| range[0] <= issue.started && issue.completed <= range[1] }.length > 0
   end
 end

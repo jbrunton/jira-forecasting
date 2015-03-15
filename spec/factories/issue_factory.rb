@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :issue do
     sequence(:key) { |k| "DEMO-#{k}" }
     sequence(:summary) { |k| "Issue #{k}" }
-    issue_type 'issue'
+    issue_type 'story'
     
     factory :epic do
       sequence(:summary) { |k| "Epic #{k}" }

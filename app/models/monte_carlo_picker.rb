@@ -30,7 +30,6 @@ class MonteCarloPicker
     PLAY_COUNT.times do
       results << play_once(opts)
     end
-    puts "*** results: #{results}"
     results.sort_by!{ |result| result[:actual_time] }
     [
       { likelihood: 50, actual_time: results[PLAY_COUNT * 0.5 - 1][:actual_time] },
