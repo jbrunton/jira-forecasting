@@ -16,9 +16,9 @@ RSpec.describe "projects/new", type: :view do
 
       assert_select "input#project_domain[name=?]", "project[domain]"
 
-      assert_select "input#project_rapid_board_id[name=?]", "project[rapid_board_id]"
+      # assert_select "input#project_rapid_board_id[name=?]", "project[rapid_board_id]"
 
-      assert_select "input#project_name[name=?]", "project[name]"
+      # assert_select "input#project_name[name=?]", "project[name]"
     end
   end
 end

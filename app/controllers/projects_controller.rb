@@ -31,6 +31,11 @@ class ProjectsController < ApplicationController
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else
+        unless @project.domain.nil?
+          client = JiraClient.new(@project.domain, params)
+          @rapid_boards = client.get_rapid_boards
+        end
+
         format.html { render :new }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end

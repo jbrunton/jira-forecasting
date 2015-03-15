@@ -1,5 +1,45 @@
+<script>
+  $(function() {
+    $('rapid_board_id').on('change', function() {
+      var name = $('#project_rapid_board_id option:selected').text();
+      $('#name').val(name);
+    });
+  });
+</script>
+
 <h1>New Project</h1>
 
-<%= render 'form' %>
+<%= form_for(@project) do |f| %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :domain %><br>
+    <%= f.text_field :domain %>
+  </div>
+  <% if @rapid_boards %>
+    <%= f.collection_select("rapid_board_id", @rapid_boards, :id, :name) %>
+    <input type="hidden" name="project[name]" id="name" value="<%= @rapid_boards.first.try(:name) %>">
+  <% else %>
+    <%= label_tag(:username, "Username:") %>
+    <input value="jbrunton" type="text" name="username" id="username">    
+
+    <%= label_tag(:password, "Password:") %>
+    <input type="text" name="password" id="password">  
+  <% end %>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
 
 <%= link_to 'Back', projects_path %>

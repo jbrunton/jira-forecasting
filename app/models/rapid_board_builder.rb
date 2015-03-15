@@ -6,7 +6,8 @@ class RapidBoardBuilder
   def build
     attrs = {
       id: id,
-      query: query
+      query: query,
+      name: name
     }
     
     RapidBoard.new(attrs)
@@ -19,5 +20,9 @@ private
   
   def query
     @json['filter']['query']
+  end
+  
+  def name
+    @json['name']
   end
 end
