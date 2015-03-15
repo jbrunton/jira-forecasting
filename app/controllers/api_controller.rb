@@ -3,7 +3,7 @@ class ApiController < ApplicationController
   
   def wip
     wip_histories = WipHistory.all.
-      map{ |history| { date: history.date, summary: history.issue.summary, key: history.issue.key } }.
+      map{ |history| { date: history.date, id: history.issue.id, summary: history.issue.summary, key: history.issue.key } }.
       # select{ |history| history.project.id == @project.id }.
       group_by{ |history| history[:date] }
     
