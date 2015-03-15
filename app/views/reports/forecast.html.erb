@@ -1,0 +1,33 @@
+<div class="content-full">
+  <h1>Forecast</h1>
+  <%= form_tag do  %>
+    <div class="field">
+      <%= label_tag :small_count %><br>
+      <%= text_field_tag :small_count, params[:small_count] ? params[:small_count] : nil %>
+    </div>
+    <div class="field">
+      <%= label_tag :medium_count %><br>
+      <%= text_field_tag :medium_count, params[:medium_count] ? params[:medium_count] : nil %>
+    </div>
+    <div class="field">
+      <%= label_tag :large_count %><br>
+      <%= text_field_tag :large_count, params[:large_count] ? params[:large_count] : nil %>
+    </div>
+    
+    <%= submit_tag %>
+  <% end %>
+  
+  <% if @forecast %>
+    <table>
+      <tr>
+        <th>Likelihood</th>
+        <th>Time</th>
+      </tr>
+      <% @forecast.each do |forecast| %>
+      <tr>
+        <td><%= "#{forecast[:likelihood]} %" %></td>
+        <td><%= "#{forecast[:actual_time]} days" %></td>
+      <% end %>
+    </table>
+  <% end %>
+</div>

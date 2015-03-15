@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     resource :reports do
       get 'epic_cycle_times'
       get 'epics_by_size'
+      get 'forecast'
+      post 'forecast'
     end
   end
 

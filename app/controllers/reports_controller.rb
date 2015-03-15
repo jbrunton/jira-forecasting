@@ -16,6 +16,17 @@ class ReportsController < ApplicationController
     end
   end
   
+  def forecast
+    if params
+      epics = @project.epics.select{ |epic| epic.completed }
+      opts = {}
+      opts.merge!({'S' => params[:small_count].to_i}) if params[:small_count].to_i > 0
+      opts.merge!({'M' => params[:medium_count].to_i}) if params[:medium_count].to_i > 0
+      opts.merge!({'L' => params[:large_count].to_i}) if params[:large_count].to_i > 0
+      @forecast = MonteCarloPicker.new(epics).play(opts)
+    end
+  end
+  
 private
   # Use callbacks to share common setup or constraints between actions.
   def set_project
