@@ -1,5 +1,6 @@
 class WipHistory < ActiveRecord::Base
   belongs_to :issue
+  delegate :project, to: :issue
   
   def self.compute!(project)
     events = Event.compute_all!(project)

@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
   
   def epic_cycle_times
     @epics = @project.epics.
-      select{ |epic| epic.completed }.
+      select{ |epic| epic.cycle_time }.
       sort_by{ |epic| epic.cycle_time }
   end
   
