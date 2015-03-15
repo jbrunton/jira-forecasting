@@ -9,12 +9,10 @@ class Event
     @epic = opts[:epic]
   end
   
-  def self.compute_all
-    epics = Issue.where(issue_type: 'epic')
-    
+  def self.compute_all!(project)
     events = []
     
-    epics.each do |epic|
+    project.epics.each do |epic|
       events.push(Event.new(time: epic.started, event_type: 'started', epic: epic)) if (epic.started)
       events.push(Event.new(time: epic.completed, event_type: 'completed', epic: epic)) if (epic.completed)
     end

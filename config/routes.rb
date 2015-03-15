@@ -1,21 +1,28 @@
 Rails.application.routes.draw do
+  resources :issues
+  
+  resources :projects do
+    member do
+      post 'sync'
+    end
+    
+    resources :issues
+    
+    resource :reports do
+      get 'epic_cycle_times'
+      get 'epics_by_size'
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'home#index'
   
-  resources :issues
-  
-  get 'sync' => 'sync#index'
-  post 'sync/sync' => 'sync#sync'
-  
   get 'api/wip' => 'api#wip'
   get 'api/cycle_time' => 'api#cycle_time'
   
-  get 'reports/epic_cycle_times' => 'reports#epic_cycle_times'
-  get 'reports/epics_by_size' => 'reports#epics_by_size'
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

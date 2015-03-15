@@ -1,6 +1,12 @@
 class IssuesController < ApplicationController
+  before_action :set_project, only: [:index]
+  
   def index
-    @epics = Issue.where(issue_type: 'epic')
+    if @project
+      @epics = @project.issues.where(issue_type: 'epic')
+    else
+      @epics = Issue.all.where(issue_type: 'epic')
+    end
   end
   
   def show
@@ -8,8 +14,8 @@ class IssuesController < ApplicationController
   end
   
 private
-  def select_rapid_board
-    rapid_boards = request_rapid_boards
-    rapid_boards.first{ |board| board.id == param['board'] }
-  end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_project
+    @project = Project.find(params[:project_id]) if params[:project_id]
+  end  
 end

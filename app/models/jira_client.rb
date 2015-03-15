@@ -5,7 +5,6 @@ class JiraClient
   end
   
   def request(method, relative_url)
-    puts "*** issuing request to #{relative_url}"
     uri = URI::join(@domain, relative_url)
     request = setup_request(uri)
     response = issue_request(uri, request)

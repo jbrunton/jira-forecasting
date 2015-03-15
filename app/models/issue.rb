@@ -4,17 +4,18 @@ class Issue < ActiveRecord::Base
   has_many :issues, class_name: "Issue", foreign_key: "epic_id"
  
   belongs_to :epic, class_name: "Issue"
+  belongs_to :project
   
   def cycle_time
     (completed - started) / 1.day unless completed.nil?
   end
   
-  def self.recompute_sizes!
-    sorted_epics = epics.
+  def self.compute_sizes!(project)
+    sorted_epics = project.epics.
       select{ |epic| epic.cycle_time }.
       sort_by{ |epic| epic.cycle_time }
       
-    incomplete_epics = epics.
+    incomplete_epics = project.epics.
       select{ |epic| epic.cycle_time.nil? }
       
     quartile_size = sorted_epics.length / 4
@@ -32,9 +33,5 @@ class Issue < ActiveRecord::Base
         epic.save
       end
     end
-  end
-  
-  def self.epics
-    Issue.where(issue_type: 'epic')
   end
 end
