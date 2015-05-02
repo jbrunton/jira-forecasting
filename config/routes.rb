@@ -11,6 +11,13 @@ Rails.application.routes.draw do
     resource :reports do
       get 'epic_cycle_times'
       get 'epics_by_size'
+      get 'forecast'
+      post 'forecast'
+
+      resource :api, controller: 'api' do
+        get 'wip'
+        get 'cycle_time'
+      end  
     end
   end
 
@@ -19,9 +26,6 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#index'
-  
-  get 'api/wip' => 'api#wip'
-  get 'api/cycle_time' => 'api#cycle_time'
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

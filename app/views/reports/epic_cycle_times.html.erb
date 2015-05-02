@@ -2,19 +2,10 @@
   <h1>Epic Cycle Times</h1>
   
   <script>
-  $(function () {
-    
-    function formatIssueLink(issue) {
-      return '<b><a href="#'
-                      + issue.key
-                      + '">'
-                      + issue.key
-                      + ' '
-                      + issue.summary
-                      + '</a></b>';
-    }
-    
-    Q.all([$.get('/api/wip.json'), $.get('/api/cycle_time.json')]).spread(function(historiesByDate, epics) {
+  
+  function fetchData() {
+    var filter = $('#filter').val();
+    Q.all([$.get('api/wip.json?filter=' + filter), $.get('api/cycle_time.json?filter=' + filter)]).spread(function(historiesByDate, epics) {
       $('#container').highcharts({
           chart: {
               type: 'spline'
@@ -66,7 +57,7 @@
                   } else {
                     html += '<b>WIP: ' + this.y;
                     _(this.point.histories).each(function(history) {
-                      html += '<br/>' + formatIssueLink(history.issue);
+                      html += '<br/>' + formatIssueLink(history);
                     }).value();
                   }
                   return html;
@@ -83,7 +74,8 @@
                   x: Date.parse(epic.completed),
                   y: epic.cycle_time,
                   key: epic.key,
-                  summary: epic.summary
+                  summary: epic.summary,
+                  id: epic.id
                 };
               }).value()
           }, {
@@ -106,40 +98,29 @@
           }]
       });      
     });
+  }
+  
+  function formatIssueLink(issue) {
+    return '<b><a href="/issues/'
+                    + issue.id
+                    + '">'
+                    + issue.key
+                    + ' '
+                    + issue.summary
+                    + '</a></b>';
+  }
+  
+  $(function () {
+    fetchData();
+    
+    $('#filter').on('change', function() {
+      fetchData();
+    });
   });
   </script>
   
   <div id="container" style="width: 100%; height: 600px;"></div>
   
-  <table>
-    <tr>
-      <td width="10%">
-        Key
-      </td>
-      <td width="40%">
-        Summary
-      </td>
-      <td width="20%">
-        Started
-      </td>
-      <td width="20%">
-        Completed
-      </td>
-      <td width="10%">
-        Cycle Time
-      </td>
-    </tr>
-    
-  </table>
-
-  <% @epics.each do |epic| %>
-    <table>
-      <%= render epic %>
-    
-      <% epic.issues.each do |issue| %>
-        <%= render issue %>
-      <% end %>
-    </table>
-  <% end %>
+  <label>Filter</label><input type="text" id="filter" >
 
 </div>

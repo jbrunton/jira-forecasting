@@ -7,7 +7,7 @@ class Issue < ActiveRecord::Base
   belongs_to :project
   
   def cycle_time
-    (completed - started) / 1.day unless completed.nil?
+    (completed - started) / 1.day unless started.nil? || completed.nil?
   end
   
   def self.compute_sizes!(project)

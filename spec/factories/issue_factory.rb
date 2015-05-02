@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :issue do
     sequence(:key) { |k| "DEMO-#{k}" }
     sequence(:summary) { |k| "Issue #{k}" }
-    issue_type 'issue'
+    issue_type 'story'
     
     factory :epic do
       sequence(:summary) { |k| "Epic #{k}" }
@@ -22,6 +22,15 @@ FactoryGirl.define do
     
     transient do
       cycle_time false
+      small false
+      medium false
+      large false
+    end
+    
+    after(:build) do |issue, evaluator|
+      issue.size = 'S' if evaluator.small      
+      issue.size = 'M' if evaluator.medium      
+      issue.size = 'L' if evaluator.large
     end
   end
 end
